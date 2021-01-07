@@ -61,6 +61,15 @@ body, html {
     overflow-y: auto;
 }
 
+.type-submit {
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border: 0 !important;
+    color: #a5a7ae !important;
+    height: 60px !important;
+    overflow-y: auto;
+    width: 80px;
+}
+
 .type_msg:focus {
     box-shadow: none !important;
     outline: 0px !important;
