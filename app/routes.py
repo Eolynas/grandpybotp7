@@ -27,7 +27,7 @@ def chatbot():
     name_project = 'GrandPy ChatBot'
     # form = forms.ChoseProjectForm()
     question = forms.QuestionToTheBot()
-    message_question = question.data['message']
+    # message_question = question.data['message']
     posts = [
         {
             'user': 'GrandPy',
@@ -41,16 +41,16 @@ def chatbot():
         }
 
     ]
-    if question.validate_on_submit():
-        print(message_question)
-        new_post = {
-            'user': 'Eddy',
-            'message': message_question,
-            'date': datetime.now()
-        }
-        posts.append(new_post)
-        return render_template('chatbot.html', name_project=name_project, posts=posts, form=question)
-        # return redirect(url_for('message'), code=307)
+    # if question.validate_on_submit():
+    #     print(message_question)
+    #     new_post = {
+    #         'user': 'Eddy',
+    #         'message': message_question,
+    #         'date': datetime.now()
+    #     }
+    #     # posts.append(new_post)
+    #     # return render_template('chatbot.html', name_project=name_project, posts=posts, form=question)
+    #     return redirect(url_for('message'), code=307)
 
     return render_template('chatbot.html', name_project=name_project, posts=posts, form=question)
     # return render_template('chattest.html', name_project=form.data['name_project'])
@@ -63,9 +63,24 @@ def message():
     :return:
     """
     question = forms.QuestionToTheBot()
-
+    message_question = question.data['message']
     # TRAITEMENT DU FORM
+    # print(message_question)
+
+    # RECUPERATION DE LA REPONSE VIA L'API GOOGLE
+
+    new_post = [{
+        'user': 'Eddy',
+        'message': message_question,
+        'date': datetime.now()
+        },
+        {
+        'user': 'GrandPyBOT',
+        'message': message_question,
+        'date': datetime.now()
+        }
+    ]
 
     # REDIRECTION VERS CHATBOT
-    return jsonify(data={'message': question.message.data})
+    return jsonify(data=new_post)
 
