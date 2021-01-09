@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <body>
+
+    <div class="code-editor">
+        <span class="control"></span>
+        <span class="control"></span>
+        <span class="control"></span>
+        <pre class="line-numbers">
+
+
+        <code class="language-css">
+            Bonjour et bienvenue sur le projet 6 d'OpenClassRooms
+        </code></pre>
+        <form class="form_project" action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <a> >>> </a>
+            {{ form.name_project }}
+            {{ form.submit }}
+        </form>
+    </div>
+    <div class="text-center">
+        <button type="button" class="btn btn-primary btn-choose-project">
+            <a href="{{ url_for('chatbot') }}">ChatBot</a>
+        </button>
+    </div>
+    </body>
+{% endblock %}
