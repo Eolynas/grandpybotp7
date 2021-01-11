@@ -28,7 +28,23 @@ $(document).ready(function () {
                                 <div class='img_cont_msg'>\
                                     <img alt='avatar' src='/static/img/child.jpg' class='rounded-circle user_img_msg'>\
                                 </div>\
+                        </div>\
+                        <div class='d-flex justify-content-start mb-4'>\
+                            <div class='img_cont_msg'>\
+                                <img alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
+                            </div>\
+                                <div class='loading-msg'> \
+                                    <div class='msg_cotainer'>\
+                                        <div class='canvas canvas6'>\
+                                            <div class='spinner p1'></div>\
+                                            <div class='spinner p2'></div>\
+                                            <div class='spinner p3'></div>\
+                                            <div class='spinner p4'></div>\
+                                        </div>\
+                                    </div>\
+                                </div>\
                         </div>"
+
                     )
                     document.getElementById("message").value = "";
                     }

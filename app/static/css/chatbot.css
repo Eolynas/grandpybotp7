@@ -139,6 +139,69 @@ body, html {
     width: 40px;
 }
 
+/*===========*/
+/*LOADING MESSAGE*/
+/*===========*/
+
+.loading-message {
+  display: flex;
+  flex-wrap: wrap;
+  /*height:;*/
+  justify-content: space-around;
+  margin: 0 auto;
+  max-width: 650px;
+  min-width: 200px;
+}
+.canvas {
+    /*align-items: center;*/
+    /*background: #eeeeee;*/
+    /*border-radius: 50%;*/
+    /*box-shadow: 0 5px 20px rgba(0,0,0,0.2);*/
+    display: flex;
+    /*height: 10em;*/
+    /*justify-content: center;*/
+    /*margin: 1em 1em 2em 1em;*/
+    /*width: 10em;*/
+}
+.spinner {
+    background: #4A4A4A;
+    border-radius: 50%;
+    height: 5px;
+    margin: 15px 2px 0px 2px;
+    width: 5px;
+}
+
+.p1 {
+  animation: fall 1s linear .3s infinite;
+}
+
+.p2 {
+  animation: fall 1s linear .2s infinite;
+}
+
+.p3 {
+  animation: fall 1s linear .1s infinite;
+}
+
+.p4 {
+  animation: fall 1s linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-5px);
+  }
+  25%, 75% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-5px);
+  }
+}
+
+/*===========*/
+/*===========*/
+
 .online_icon {
     position: absolute;
     height: 15px;

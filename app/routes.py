@@ -65,7 +65,13 @@ def message():
     question = forms.QuestionToTheBot()
     message_question = question.data['message']
     # TRAITEMENT DU FORM
-    # print(message_question)
+    print(message_question)
+
+    #PARSER
+    word_json = 'app/static/word_fr.json'
+    f = open(word_json, "r")
+    list_word = f.readlines()
+
 
     # RECUPERATION DE LA REPONSE VIA L'API GOOGLE
 
@@ -73,14 +79,11 @@ def message():
         'user': 'Eddy',
         'message': message_question,
         'date': datetime.now()
-        },
-        {
-        'user': 'GrandPyBOT',
-        'message': message_question,
-        'date': datetime.now()
         }
     ]
+    print(new_post)
 
     # REDIRECTION VERS CHATBOT
     return jsonify(data=new_post)
+    # return redirect(url_for('chatbot'), code=307)
 
