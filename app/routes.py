@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from app import app, forms
+from app import app, forms, parser
 from flask import render_template, redirect, url_for, flash, request, jsonify
 
 
@@ -65,13 +65,14 @@ def message():
     question = forms.QuestionToTheBot()
     message_question = question.data['message']
     # TRAITEMENT DU FORM
+
     print(message_question)
 
     #PARSER
-    word_json = 'app/static/word_fr.json'
-    f = open(word_json, "r")
-    list_word = f.readlines()
+    # init_parser = parser.Parser
+    parse_question = parser.parser(string=message_question)
 
+    print(parse_question)
 
     # RECUPERATION DE LA REPONSE VIA L'API GOOGLE
 

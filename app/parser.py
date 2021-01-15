@@ -1,5 +1,79 @@
 import json
 
+list_spec = [",",
+                          "?",
+                          ";",
+                          ".",
+                          ":",
+                          "/",
+                          "!",
+                          "§",
+                          "ù",
+                          "*",
+                          "%",
+                          "µ",
+                          "^",
+                          "$",
+                          "&",
+                          "é",
+                          "\"",
+                          "'",
+                          "(",
+                          "-",
+                          "è",
+                          "_",
+                          "_",
+                          "ç",
+                          "à",
+                          ")",
+                          "=",
+                          "~",
+                          "#",
+                          "{",
+                          "[",
+                          "|",
+                          "`",
+                          "^",
+                          "@",
+                          "]",
+                          "]",
+                          "}",]
+bad_word = ['bonjour', 'connait', 'adresse']
+
+def parser(string: str) -> list:
+    """
+    parse str
+    :return:
+    """
+
+    data_json: list
+    file_json = "/home/eddy/PycharmProjects/project_7/app/word_fr.json"
+    with open(file_json) as json_file:
+        data = json.load(json_file)
+        data_json = data
+    words = string.split(' ')
+
+    list_word_parsed = []
+    for word in words:
+        if word == "" or word.isdigit():
+            continue
+
+        word = word.lower()
+        if word[len(word) - 1] in list_spec:
+            word = word[:len(word) - 1]
+        if len(word) > 1:
+            if word[1] == "'":
+                word = word[2:]
+        # if not word in data_json and not word in self.bad_word:
+        #     print(f"le mot {word} n'est pas dans les deux list")
+        if word in data_json or word in bad_word or word == "":
+            continue
+
+        list_word_parsed.append(word.rstrip())
+
+    print(list_word_parsed)
+    return list_word_parsed
+
 
 class Parser:
     """
