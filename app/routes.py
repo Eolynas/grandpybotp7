@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask import render_template, redirect, url_for, jsonify
 
-from app import app, forms, parser, api_google
+from app import app, forms, parser, api_google, function
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -34,11 +34,6 @@ def chatbot():
             'user': 'GrandPy',
             'message': 'Bonjour est bienvenue sur mon chatbot',
             'date': '22/12/2020 17:13'
-        },
-        {
-            'user': 'Eddy',
-            'message': 'Bonjour vous allez bien',
-            'date': '22/12/2020 17:14'
         }
 
     ]
@@ -60,26 +55,18 @@ def message():
     # PARSER
     # init_parser = parser.Parser
     parse_question = parser.parser(string=message_question)
-    print(parse_question)
 
     cnx_api = api_google.ApiGoogle()
-    get_api = cnx_api.get_address(parse_question[0])
+    get_api = cnx_api.get_address(parse_question)
     result_address = get_api["results"][0]["formatted_address"]
     print(cnx_api)
     dict_get_api = {}
+    date_now = function.get_date_now()
+    dict_message = {'data': parse_question, 'date': date_now}
+    dict_get_api['message'] = dict_message
     dict_get_api['address'] = get_api["results"][0]["formatted_address"]
     dict_get_api['location'] = get_api["results"][0]["geometry"]["location"]
 
-
-    # RECUPERATION DE LA REPONSE VIA L'API GOOGLE
-
-    new_post = [{
-        'user': 'Eddy',
-        'message': message_question,
-        'date': datetime.now()
-    }
-    ]
-    print(new_post)
 
     # REDIRECTION VERS CHATBOT
     return jsonify(data=dict_get_api)

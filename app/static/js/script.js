@@ -51,7 +51,7 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data)
                 console.log(data.data.address)
-                var message = "Voici l'addresse: " + data.data.address
+                var message = "Voici l'adresse de " + data.data.message + ": " + data.data.address
                 $('#message-chatbot').append("\
                             <div class='d-flex justify-content-start mb-4'>\
                                     <div class='img_cont_msg'>\
@@ -59,7 +59,7 @@ $(document).ready(function () {
                                     </div>\
                                     <div class='msg_cotainer'>\
                                         "+ message +"\
-                                        <span class='msg_time'></span>\
+                                        <span class='msg_time'>"+ data.data.message.date +"</span>\
                                     </div>\
                                 </div>"
                 )

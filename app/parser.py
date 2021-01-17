@@ -40,7 +40,8 @@ list_spec = [",",
                           "}",]
 bad_word = ['bonjour', 'connait', 'adresse']
 
-def parser(string: str) -> list:
+
+def parser(string: str) -> str:
     """
     parse str
     :return:
@@ -71,8 +72,8 @@ def parser(string: str) -> list:
 
         list_word_parsed.append(word.rstrip())
 
-    print(list_word_parsed)
-    return list_word_parsed
+    string_parsed = " ".join(list_word_parsed)
+    return string_parsed
 
 
 class Parser:

@@ -34,17 +34,6 @@
                                     </div>
 
                                 </div>
-                            {% else %}
-                                <div class="d-flex justify-content-end mb-4">
-                                    <div class="msg_cotainer_send">
-                                        {{ post.message }}
-                                        <span class="msg_time_send">{{ post.date }}</span>
-                                    </div>
-                                    <div class="img_cont_msg">
-                                        <img src="{{ url_for('static', filename='img/child.jpg') }}"
-                                             class="rounded-circle user_img_msg">
-                                    </div>
-                                </div>
                             {% endif %}
                         {% endfor %}
 

@@ -70,10 +70,10 @@ class TestFlaskApp:
         parse_question = parser.Parser()
 
         parse_message = parse_question.parser(messages[0])
-        assert parse_message == ["openclassrooms"]
+        assert parse_message == "openclassrooms"
 
         parse_message = parse_question.parser(messages[1])
-        assert parse_message == ["openclassrooms"]
+        assert parse_message == "openclassrooms"
 
         parse_message = parse_question.parser(messages_empty)
         assert parse_message == []
