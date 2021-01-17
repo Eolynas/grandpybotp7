@@ -1,7 +1,8 @@
 from datetime import datetime
 
-from app import app, forms, parser
-from flask import render_template, redirect, url_for, flash, request, jsonify
+from flask import render_template, redirect, url_for, jsonify
+
+from app import app, forms, parser, api_google
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -41,16 +42,6 @@ def chatbot():
         }
 
     ]
-    # if question.validate_on_submit():
-    #     print(message_question)
-    #     new_post = {
-    #         'user': 'Eddy',
-    #         'message': message_question,
-    #         'date': datetime.now()
-    #     }
-    #     # posts.append(new_post)
-    #     # return render_template('chatbot.html', name_project=name_project, posts=posts, form=question)
-    #     return redirect(url_for('message'), code=307)
 
     return render_template('chatbot.html', name_project=name_project, posts=posts, form=question)
     # return render_template('chattest.html', name_project=form.data['name_project'])
@@ -66,13 +57,19 @@ def message():
     message_question = question.data['message']
     # TRAITEMENT DU FORM
 
-    print(message_question)
-
-    #PARSER
+    # PARSER
     # init_parser = parser.Parser
     parse_question = parser.parser(string=message_question)
-
     print(parse_question)
+
+    cnx_api = api_google.ApiGoogle()
+    get_api = cnx_api.get_address(parse_question[0])
+    result_address = get_api["results"][0]["formatted_address"]
+    print(cnx_api)
+    dict_get_api = {}
+    dict_get_api['address'] = get_api["results"][0]["formatted_address"]
+    dict_get_api['location'] = get_api["results"][0]["geometry"]["location"]
+
 
     # RECUPERATION DE LA REPONSE VIA L'API GOOGLE
 
@@ -80,11 +77,103 @@ def message():
         'user': 'Eddy',
         'message': message_question,
         'date': datetime.now()
-        }
+    }
     ]
     print(new_post)
 
     # REDIRECTION VERS CHATBOT
-    return jsonify(data=new_post)
+    return jsonify(data=dict_get_api)
     # return redirect(url_for('chatbot'), code=307)
 
+
+"""
+{
+    "results": [
+        {
+            "address_components": [
+                {
+                    "long_name": "10",
+                    "short_name": "10",
+                    "types": [
+                        "street_number"
+                    ]
+                },
+                {
+                    "long_name": "Quai de la Charente",
+                    "short_name": "Quai de la Charente",
+                    "types": [
+                        "route"
+                    ]
+                },
+                {
+                    "long_name": "Paris",
+                    "short_name": "Paris",
+                    "types": [
+                        "locality",
+                        "political"
+                    ]
+                },
+                {
+                    "long_name": "Département de Paris",
+                    "short_name": "Département de Paris",
+                    "types": [
+                        "administrative_area_level_2",
+                        "political"
+                    ]
+                },
+                {
+                    "long_name": "Île-de-France",
+                    "short_name": "IDF",
+                    "types": [
+                        "administrative_area_level_1",
+                        "political"
+                    ]
+                },
+                {
+                    "long_name": "France",
+                    "short_name": "FR",
+                    "types": [
+                        "country",
+                        "political"
+                    ]
+                },
+                {
+                    "long_name": "75019",
+                    "short_name": "75019",
+                    "types": [
+                        "postal_code"
+                    ]
+                }
+            ],
+            "formatted_address": "10 Quai de la Charente, 75019 Paris, France",
+            "geometry": {
+                "location": {
+                    "lat": 48.8975156,
+                    "lng": 2.3833993
+                },
+                "location_type": "ROOFTOP",
+                "viewport": {
+                    "northeast": {
+                        "lat": 48.8988645802915,
+                        "lng": 2.384748280291502
+                    },
+                    "southwest": {
+                        "lat": 48.8961666197085,
+                        "lng": 2.382050319708498
+                    }
+                }
+            },
+            "place_id": "ChIJIZX8lhRu5kcRGwYk8Ce3Vc8",
+            "plus_code": {
+                "compound_code": "V9XM+29 Paris, France",
+                "global_code": "8FW4V9XM+29"
+            },
+            "types": [
+                "establishment",
+                "point_of_interest"
+            ]
+        }
+    ],
+    "status": "OK"
+}
+"""

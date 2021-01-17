@@ -1,7 +1,6 @@
 # from app_flask.hello import app as flask_app
 from app import app as flask_app
-from app import forms, parser
-from flask import json
+from app import parser, api_google
 
 
 class TestFlaskApp:
@@ -88,22 +87,117 @@ class TestFlaskApp:
         # parse_message = parse_question.parser(messages_speciaux[1])
         # assert parse_message == ["bonjour"]
 
+    def test_get_api(self):
+        """
+        # TODO A FAIRE
+        :return:
+        """
+        example_true_reponse_api = {
+            "results": [
+                {
+                    "address_components": [
+                        {
+                            "long_name": "10",
+                            "short_name": "10",
+                            "types": [
+                                "street_number"
+                            ]
+                        },
+                        {
+                            "long_name": "Quai de la Charente",
+                            "short_name": "Quai de la Charente",
+                            "types": [
+                                "route"
+                            ]
+                        },
+                        {
+                            "long_name": "Paris",
+                            "short_name": "Paris",
+                            "types": [
+                                "locality",
+                                "political"
+                            ]
+                        },
+                        {
+                            "long_name": "Département de Paris",
+                            "short_name": "Département de Paris",
+                            "types": [
+                                "administrative_area_level_2",
+                                "political"
+                            ]
+                        },
+                        {
+                            "long_name": "Île-de-France",
+                            "short_name": "IDF",
+                            "types": [
+                                "administrative_area_level_1",
+                                "political"
+                            ]
+                        },
+                        {
+                            "long_name": "France",
+                            "short_name": "FR",
+                            "types": [
+                                "country",
+                                "political"
+                            ]
+                        },
+                        {
+                            "long_name": "75019",
+                            "short_name": "75019",
+                            "types": [
+                                "postal_code"
+                            ]
+                        }
+                    ],
+                    "formatted_address": "10 Quai de la Charente, 75019 Paris, France",
+                    "geometry": {
+                        "location": {
+                            "lat": 48.8975156,
+                            "lng": 2.3833993
+                        },
+                        "location_type": "ROOFTOP",
+                        "viewport": {
+                            "northeast": {
+                                "lat": 48.8988645802915,
+                                "lng": 2.384748280291502
+                            },
+                            "southwest": {
+                                "lat": 48.8961666197085,
+                                "lng": 2.382050319708498
+                            }
+                        }
+                    },
+                    "place_id": "ChIJIZX8lhRu5kcRGwYk8Ce3Vc8",
+                    "plus_code": {
+                        "compound_code": "V9XM+29 Paris, France",
+                        "global_code": "8FW4V9XM+29"
+                    },
+                    "types": [
+                        "establishment",
+                        "point_of_interest"
+                    ]
+                }
+            ],
+            "status": "OK"
+        }
 
+        example_false_reponse_api = {
+            "results": [],
+            "status": "ZERO_RESULTS"
+        }
 
+        question_parsed_1 = "openclassrooms"
+        question_parsed_2 = "sqsdqqdqsdqsdq"
+        init_api = api_google.ApiGoogle()
 
+        get_api_address = init_api.get_address(question_parsed_1)
+        print(get_api_address)
+        assert get_api_address == example_true_reponse_api
 
-
-
-
-
-        # TEST SUR UNE CHAINE SI JE RECUPERER LES BONS MOTS
-
-        #
-
-
-
-
-
+        get_api_address_2 = init_api.get_address(question_parsed_2)
+        print(get_api_address_2)
+        assert get_api_address_2 == example_false_reponse_api
 
 
 
