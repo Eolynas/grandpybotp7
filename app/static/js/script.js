@@ -81,7 +81,7 @@ $(document).ready(function () {
                 setTimeout(function(){
                     $('#message_bot_loading').remove()
                     $('#message-chatbot').append(dom_message_bot)
-                }, 2000);
+                }, 500);
             },
 
         });
