@@ -48,7 +48,7 @@ def parser(string: str) -> str:
     """
 
     data_json: list
-    file_json = "/home/eddy/PycharmProjects/project_7/app/word_fr.json"
+    file_json = "app/word_fr.json"
     with open(file_json) as json_file:
         data = json.load(json_file)
         data_json = data

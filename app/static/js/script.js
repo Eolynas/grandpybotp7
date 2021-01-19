@@ -21,24 +21,6 @@ $(document).ready(function () {
                                 </div>\
                         </div>")
 
-            // setTimeout(function(){
-            //     $('#message-chatbot').append("\
-            //         <div class='d-flex justify-content-start mb-4'>\
-            //             <div class='img_cont_msg' >\
-            //                 <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
-            //             </div>\
-            //                 <div class='loading-msg'> \
-            //                     <div class='msg_cotainer'>\
-            //                         <div class='canvas canvas6'>\
-            //                             <div class='spinner p1'></div>\
-            //                             <div class='spinner p2'></div>\
-            //                             <div class='spinner p3'></div>\
-            //                             <div class='spinner p4'></div>\
-            //                         </div>\
-            //                     </div>\
-            //                 </div>\
-            //         </div>")
-            // }, 2000);
         }
         $.ajax({
             type: "POST",
@@ -61,8 +43,7 @@ $(document).ready(function () {
                                             </div>\
                                         </div>\
                                     </div>\
-                            </div>\
-                            <div id='map' class='map'></div>"
+                            </div>"
                 $("#message").val("");
                 $('#message-chatbot').append(loading_message)
 
@@ -71,6 +52,7 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data)
                 console.log(data.data.address)
+                var id_map = "map_" + Date.now()
                 var message = "Voici l'adresse de " + data.data.message.data + ": " + data.data.address
                 var dom_message_bot = "\
                                 <div class='d-flex justify-content-start mb-4'>\
@@ -82,12 +64,12 @@ $(document).ready(function () {
                                                 <span class='msg_time'>" + data.data.message.date + "</span>\
                                         </div>\
                                 </div>\
-                                <div id='map' class='map'></div>"
+                                <div id="+ id_map +" class='map'></div>"
 
                 setTimeout(function () {
                     $('#message_bot_loading').remove()
                     $('#message-chatbot').append(dom_message_bot)
-                    initMap()
+                    initMap(data.data.location.lat, data.data.location.lng, id_map)
                 }, 500);
 
             },
@@ -101,11 +83,11 @@ $(document).ready(function () {
 
 let map;
 
-function initMap() {
+function initMap(lat, lng, id) {
     // "lat": 47.9879489,
     // "lng": 0.2084077
-    const myLatLng = {lat: 47.9879489, lng: 0.2084077};
-    const map = new google.maps.Map(document.getElementById("map"), {
+    const myLatLng = {lat: lat, lng: lng};
+    const map = new google.maps.Map(document.getElementById(id), {
         zoom: 12,
         center: myLatLng,
     });
