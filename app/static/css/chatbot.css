@@ -336,3 +336,8 @@ body, html {
         margin-bottom: 15px !important;
     }
 }
+
+.map {
+    height: 50%;
+    width: 70%;
+}
