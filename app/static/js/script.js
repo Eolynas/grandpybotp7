@@ -53,23 +53,39 @@ $(document).ready(function () {
                 console.log(data)
                 console.log(data.data.address)
                 var id_map = "map_" + Date.now()
-                var message = "Voici l'adresse de " + data.data.message.data + ": " + data.data.address
+                // var message = "Voici l'adresse de " + data.data.message.data + ": " + data.data.address
                 var dom_message_bot = "\
                                 <div class='d-flex justify-content-start mb-4'>\
                                         <div class='img_cont_msg'>\
                                                 <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
                                         </div>\
                                         <div class='msg_cotainer'>\
-                                                " + message + "\
+                                                " + data.data.message.data + "\
                                                 <span class='msg_time'>" + data.data.message.date + "</span>\
                                         </div>\
                                 </div>\
                                 <div id="+ id_map +" class='map'></div>"
+                var no_found_message = "\
+                                <div class='d-flex justify-content-start mb-4'>\
+                                        <div class='img_cont_msg'>\
+                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
+                                        </div>\
+                                        <div class='msg_cotainer'>\
+                                                " + data.data.message.data + "\
+                                                <span class='msg_time'>" + data.data.message.date + "</span>\
+                                        </div>\
+                                </div>"
+
 
                 setTimeout(function () {
                     $('#message_bot_loading').remove()
-                    $('#message-chatbot').append(dom_message_bot)
-                    initMap(data.data.location.lat, data.data.location.lng, id_map)
+                    if (data.data.status === false) {
+                        $('#message-chatbot').append(no_found_message)
+                    }
+                    else {
+                        $('#message-chatbot').append(dom_message_bot)
+                        initMap(data.data.location.lat, data.data.location.lng, id_map)
+                    }
                 }, 500);
 
             },

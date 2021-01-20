@@ -58,18 +58,29 @@ def message():
 
     cnx_api = api_google.ApiGoogle()
     get_api = cnx_api.get_address(parse_question)
-    result_address = get_api["results"][0]["formatted_address"]
-    print(cnx_api)
     dict_get_api = {}
     date_now = function.get_date_now()
-    dict_message = {'data': parse_question, 'date': date_now}
-    dict_get_api['message'] = dict_message
-    dict_get_api['address'] = get_api["results"][0]["formatted_address"]
-    dict_get_api['location'] = get_api["results"][0]["geometry"]["location"]
+    if get_api["status"] == "ZERO_RESULTS":
+        message_no_found = f"Désolé mon petit, je ne trouve pas cette adresse de {parse_question}"
+        dict_message = {'data': message_no_found, 'date': date_now}
+        dict_get_api['message'] = dict_message
+        dict_get_api['status'] = False
+
+        return jsonify(data=dict_get_api)
+
+    else:
+        result_address = get_api["results"][0]["formatted_address"]
+        print(cnx_api)
+        message_return = f" Voici l'adresse de {parse_question}: {get_api['results'][0]['formatted_address']}"
+        dict_message = {'data': message_return, 'date': date_now}
+        dict_get_api['message'] = dict_message
+        dict_get_api['status'] = True
+        dict_get_api['address'] = get_api["results"][0]["formatted_address"]
+        dict_get_api['location'] = get_api["results"][0]["geometry"]["location"]
 
 
-    # REDIRECTION VERS CHATBOT
-    return jsonify(data=dict_get_api)
+        # REDIRECTION VERS CHATBOT
+        return jsonify(data=dict_get_api)
     # return redirect(url_for('chatbot'), code=307)
 
 
