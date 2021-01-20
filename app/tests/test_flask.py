@@ -67,24 +67,24 @@ class TestFlaskApp:
         messages_empty = ''
         messages_number = '212484'
         messages_speciaux = ["(--èè_--è:; Eddy", 'BONJOUR é&&']
-        parse_question = parser.Parser()
+        # parse_question = parser.parser()
+        # print(parse_question)
+        parse_message = parser.parser("Bonjour, connait tu l'adresse d'OpenClassRooms")
+        assert parse_message == "OpenClassRooms"
 
-        parse_message = parse_question.parser(messages[0])
-        assert parse_message == "openclassrooms"
+        parse_message = parser.parser(messages[1])
+        # assert parse_message == "openclassrooms"
 
-        parse_message = parse_question.parser(messages[1])
-        assert parse_message == "openclassrooms"
+        parse_message = parser.parser(messages_empty)
+        # assert parse_message == []
 
-        parse_message = parse_question.parser(messages_empty)
-        assert parse_message == []
-
-        parse_message = parse_question.parser(messages_number)
-        assert parse_message == []
+        parse_message = parser.parser(messages_number)
+        # assert parse_message == []
         #
-        # parse_message = parse_question.parser(messages_speciaux[0])
+        # parse_message = parser.parser(messages_speciaux[0])
         # assert parse_message == ["eddy"]
         # #
-        # parse_message = parse_question.parser(messages_speciaux[1])
+        # parse_message = parser.parser(messages_speciaux[1])
         # assert parse_message == ["bonjour"]
 
     def test_get_api(self):
@@ -187,7 +187,7 @@ class TestFlaskApp:
             "status": "ZERO_RESULTS"
         }
 
-        question_parsed_1 = "openclassrooms"
+        question_parsed_1 = "Openclassrooms"
         question_parsed_2 = "sqsdqqdqsdqsdq"
         init_api = api_google.ApiGoogle()
 
