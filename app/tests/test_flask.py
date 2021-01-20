@@ -1,6 +1,6 @@
 # from app_flask.hello import app as flask_app
 from app import app as flask_app
-from app import parser, api_google
+from app import parser, api_google, wiki
 
 
 class TestFlaskApp:
@@ -87,7 +87,7 @@ class TestFlaskApp:
         # parse_message = parser.parser(messages_speciaux[1])
         # assert parse_message == ["bonjour"]
 
-    def test_get_api(self):
+    def test_get_api_google(self):
         """
         # TODO A FAIRE
         :return:
@@ -199,6 +199,48 @@ class TestFlaskApp:
         print(get_api_address_2)
         assert get_api_address_2 == example_false_reponse_api
 
+    def get_api_wiki(self):
+        """
+        # TODO A FAIRE
+        :return:
+        """
 
+        example_get = {
+            "batchcomplete": "",
+            "continue": {
+                "sroffset": 10,
+                "continue": "-||"
+            },
+            "query": {
+                "searchinfo": {
+                    "totalhits": 41
+                },
+                "search": [
+                    {
+                        "ns": 0,
+                        "title": "OpenClassrooms",
+                        "pageid": 4338589,
+                        "size": 30753,
+                        "wordcount": 3137,
+                        "snippet": "chez <span class=\"searchmatch\">OpenClassrooms</span> », <span class=\"searchmatch\">OpenClassrooms</span> : le blog,\u200e 17 avril 2018 (lire en ligne, consulté le 11 juillet 2018) « <span class=\"searchmatch\">OpenClassrooms</span> », sur <span class=\"searchmatch\">openclassrooms</span>.com",
+                        "timestamp": "2020-12-30T04:35:53Z"
+                    }
+                ]
+            }
+        }
+        example_get_no_found = {
+            "batchcomplete": "",
+            "query": {
+                "searchinfo": {
+                    "totalhits": 0
+                },
+                "search": []
+            }
+        }
 
+        init_wiki = wiki.Wiki()
+        get_test = init_wiki.get_wiki_address("Openclassrooms")
+        assert get_test == example_get
 
+        get_test_no_found = init_wiki.get_wiki_address("sqdqsdqsdqsdq")
+        assert get_test_no_found == example_get_no_found

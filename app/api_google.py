@@ -4,21 +4,21 @@ import app.config.config as config
 
 class ApiGoogle:
     """
-    # TODO
+    return info from the google api of the address
     """
 
     def __init__(self):
-        pass
+        # TODO: A REVOIR
+        self.key_api = config.config['API']['key_api_google']
 
-    def get_address(self, addresse: str) -> dict:
+    def get_address(self, address: str) -> dict:
         """
         # TOTO A FAIRE
-        :param addresse:
-        :return:
+        :param address: string parsed
+        :return: dict with info googlemap api
         """
-        key_api = config.config['API']['key_api_google']
 
-        get_api = requests.get(url=f"https://maps.googleapis.com/maps/api/geocode/json?address={addresse}&key={key_api}&components=country:FR")
+        get_api = requests.get(url=f"https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={self.key_api}&components=country:FR")
         print(get_api)
 
         return get_api.json()
