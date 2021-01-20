@@ -67,18 +67,18 @@ class TestFlaskApp:
         messages_empty = ''
         messages_number = '212484'
         messages_speciaux = ["(--èè_--è:; Eddy", 'BONJOUR é&&']
-        # parse_question = parser.parser()
+        parse_question = parser.Parser()
         # print(parse_question)
-        parse_message = parser.parser("Bonjour, connait tu l'adresse d'OpenClassRooms")
+        parse_message = parse_question.parser("Bonjour, connait tu l'adresse d'OpenClassRooms")
         assert parse_message == "OpenClassRooms"
 
-        parse_message = parser.parser(messages[1])
+        parse_message = parse_question.parser(messages[1])
         # assert parse_message == "openclassrooms"
 
-        parse_message = parser.parser(messages_empty)
+        parse_message = parse_question.parser(messages_empty)
         # assert parse_message == []
 
-        parse_message = parser.parser(messages_number)
+        parse_message = parse_question.parser(messages_number)
         # assert parse_message == []
         #
         # parse_message = parser.parser(messages_speciaux[0])

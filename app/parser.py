@@ -41,37 +41,37 @@ list_spec = [",",
 bad_word = ['bonjour', 'connait', 'adresse']
 
 
-def parser(string: str) -> str:
-    """
-    parse str
-    :return:
-    """
-
-    data_json: list
-    file_json = "app/word_fr.json"
-    with open(file_json) as json_file:
-        data = json.load(json_file)
-        data_json = data
-    words = string.split(' ')
-
-    list_word_parsed = []
-    for word in words:
-        if word == "" or word.isdigit():
-            continue
-
-        if word[len(word) - 1] in list_spec:
-            word = word[:len(word) - 1]
-        if len(word) > 1:
-            if word[1] == "'":
-                word = word[2:]
-        word_lower = word.lower()
-        if word_lower in data_json or word_lower in bad_word or word_lower == "":
-            continue
-
-        list_word_parsed.append(word.rstrip())
-
-    string_parsed = " ".join(list_word_parsed)
-    return string_parsed
+# def parser(string: str) -> str:
+#     """
+#     parse str
+#     :return:
+#     """
+#
+#     data_json: list
+#     file_json = "app/word_fr.json"
+#     with open(file_json) as json_file:
+#         data = json.load(json_file)
+#         data_json = data
+#     words = string.split(' ')
+#
+#     list_word_parsed = []
+#     for word in words:
+#         if word == "" or word.isdigit():
+#             continue
+#
+#         if word[len(word) - 1] in list_spec:
+#             word = word[:len(word) - 1]
+#         if len(word) > 1:
+#             if word[1] == "'":
+#                 word = word[2:]
+#         word_lower = word.lower()
+#         if word_lower in data_json or word_lower in bad_word or word_lower == "":
+#             continue
+#
+#         list_word_parsed.append(word.rstrip())
+#
+#     string_parsed = " ".join(list_word_parsed)
+#     return string_parsed
 
 
 class Parser:
@@ -130,14 +130,14 @@ class Parser:
         """
         pass
 
-    def parser(self, string: str) -> list:
+    def parser(self, string: str) -> str:
         """
         parse str
-        :return:
+        :return:stringer parsed
         """
 
         data_json: list
-        file_json = "/home/eddy/PycharmProjects/project_7/app/word_fr.json"
+        file_json = "app/word_fr.json"
         with open(file_json) as json_file:
             data = json.load(json_file)
             data_json = data
@@ -148,20 +148,19 @@ class Parser:
             if word == "" or word.isdigit():
                 continue
 
-            word = word.lower()
-            if word[len(word) - 1] in self.list_spec:
+            if word[len(word) - 1] in list_spec:
                 word = word[:len(word) - 1]
-            if word[1] == "'":
-                word = word[2:]
-            # if not word in data_json and not word in self.bad_word:
-            #     print(f"le mot {word} n'est pas dans les deux list")
-            if word in data_json or word in self.bad_word or word == "":
+            if len(word) > 1:
+                if word[1] == "'":
+                    word = word[2:]
+            word_lower = word.lower()
+            if word_lower in data_json or word_lower in bad_word or word_lower == "":
                 continue
 
             list_word_parsed.append(word.rstrip())
 
-        print(list_word_parsed)
-        return list_word_parsed
+        string_parsed = " ".join(list_word_parsed)
+        return string_parsed
 
 
 if __name__ == "__main__":
