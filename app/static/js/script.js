@@ -6,7 +6,10 @@ $(document).ready(function () {
         const str_message = $('#message').val();
         if (str_message) {
             const now = new Date();
-            const date_now = now.getDate() + '/' + now.getMonth() + '/' + now.getFullYear() + ' ' + now.getHours() + ':' + now.getMinutes();
+            let options = { dateStyle: 'short', timeStyle: 'short' };
+            const date_now = now.toLocaleString('fr-FR', options)
+
+
             console.log('val ' + str_message)
 
 

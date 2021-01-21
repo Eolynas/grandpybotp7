@@ -55,7 +55,8 @@ def message():
     cnx_api = api_google.ApiGoogle()
     get_api = cnx_api.get_address(parse_question)
     dict_get_api = {}
-    date_now = function.get_date_now()
+    date_now = datetime.now()
+    date_now = date_now.strftime("%d/%m/%Y %H:%M")
     if get_api["status"] == "ZERO_RESULTS":
         message_no_found = f"Désolé mon petit, je ne trouve pas l'adresse de {parse_question}"
         dict_message = {'data': message_no_found, 'date': date_now}

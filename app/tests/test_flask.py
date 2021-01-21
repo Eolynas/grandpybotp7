@@ -199,7 +199,7 @@ class TestFlaskApp:
         print(get_api_address_2)
         assert get_api_address_2 == example_false_reponse_api
 
-    def get_api_wiki(self):
+    def test_get_api_wiki(self):
         """
         # TODO A FAIRE
         :return:
