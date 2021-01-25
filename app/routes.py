@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask import render_template, redirect, url_for, jsonify
 
-from app import app, forms, parser, api_google, function
+from app import app, forms, parser, api_google, function, wiki
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -73,6 +73,12 @@ def message():
         dict_get_api['status'] = True
         dict_get_api['address'] = get_api["results"][0]["formatted_address"]
         dict_get_api['location'] = get_api["results"][0]["geometry"]["location"]
+
+        # REQUEST API MEDIAWIKI
+        init_wiki = wiki.Wiki()
+        get_info_wiki = init_wiki.get_wiki_address(parse_question)
+        dict_get_api['wiki'] = get_info_wiki
+        dict_get_api['wiki_grandpy'] = f"Voici une petite histoire sur {parse_question}"
 
 
         # REDIRECTION VERS CHATBOT

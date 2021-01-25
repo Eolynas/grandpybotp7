@@ -79,7 +79,26 @@ $(document).ready(function () {
                                         </div>\
                                 </div>"
 
-
+                var message_grandpy_wiki = "\
+                                <div class='d-flex justify-content-start mb-4'>\
+                                        <div class='img_cont_msg'>\
+                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
+                                        </div>\
+                                        <div class='msg_cotainer'>\
+                                                " + data.data.wiki_grandpy + "\
+                                                <span class='msg_time'>" + data.data.message.date + "</span>\
+                                        </div>\
+                                </div>"
+                var get_info_wiki = "\
+                                <div class='d-flex justify-content-start mb-4'>\
+                                        <div class='img_cont_msg'>\
+                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
+                                        </div>\
+                                        <div class='msg_cotainer'>\
+                                                " + data.data.wiki[0].snippet + "\
+                                                <span class='msg_time'>" + data.data.message.date + "</span>\
+                                        </div>\
+                                </div>"
                 setTimeout(function () {
                     $('#message_bot_loading').remove()
                     if (data.data.status === false) {
@@ -90,6 +109,10 @@ $(document).ready(function () {
                         initMap(data.data.location.lat, data.data.location.lng, id_map)
                     }
                 }, 500);
+                setTimeout(function () {
+                    $('#message-chatbot').append(message_grandpy_wiki)
+                    $('#message-chatbot').append(get_info_wiki)
+                }, 5000);
 
             },
 

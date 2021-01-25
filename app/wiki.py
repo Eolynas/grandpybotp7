@@ -1,5 +1,6 @@
 import requests
 
+
 class Wiki:
     """
     return the info on the address from the wiki API
@@ -25,7 +26,7 @@ class Wiki:
         get_api = requests.get(self.url_api, params=parameters)
         print(get_api.json())
 
-        return get_api.json()
+        return get_api.json()['query']['search']
 
 
 if __name__ == "__main__":
