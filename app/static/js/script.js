@@ -53,19 +53,49 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data)
                 console.log(data.data.address)
-
                 google(data.data)
+                wiki(data.data)
+
 
             },
         });
     });
 });
 
-let map;
+function dom_grandpy(message, id_map = false) {
+    const now = new Date();
+            let options = {dateStyle: 'short', timeStyle: 'short'};
+            const date_now = now.toLocaleString('fr-FR', options)
+    var dom_message_bot = "\
+                                <div class='d-flex justify-content-start mb-4'>\
+                                        <div class='img_cont_msg'>\
+                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
+                                        </div>\
+                                        <div class='msg_cotainer'>\
+                                                " + message + "\
+                                                <span class='msg_time'>" + date_now + "</span>\
+                                        </div>\
+                                </div>\
+                                <div id=" + id_map + " class='map'></div>"
+    var dom_message_bot_without_map = "\
+                                <div class='d-flex justify-content-start mb-4'>\
+                                        <div class='img_cont_msg'>\
+                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
+                                        </div>\
+                                        <div class='msg_cotainer'>\
+                                                " + message + "\
+                                                <span class='msg_time'>" + date_now + "</span>\
+                                        </div>\
+                                </div>"
+    if (id_map === false){
+        $('#message-chatbot').append(dom_message_bot_without_map)
+    }
+    else {
+        $('#message-chatbot').append(dom_message_bot)
+    }
+}
 
 function initMap(lat, lng, id) {
-    // "lat": 47.9879489,
-    // "lng": 0.2084077
     const myLatLng = {lat: lat, lng: lng};
     const map = new google.maps.Map(document.getElementById(id), {
         zoom: 12,
@@ -80,26 +110,25 @@ function initMap(lat, lng, id) {
 
 function google(data) {
     var id_map = "map_" + Date.now()
-    var dom_message_bot = "\
-                                <div class='d-flex justify-content-start mb-4'>\
-                                        <div class='img_cont_msg'>\
-                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
-                                        </div>\
-                                        <div class='msg_cotainer'>\
-                                                " + data.message.data + "\
-                                                <span class='msg_time'>" + data.message.date + "</span>\
-                                        </div>\
-                                </div>\
-                                <div id=" + id_map + " class='map'></div>"
 
     setTimeout(function () {
-                    $('#message_bot_loading').remove()
-                    if (data.status === false) {
-                        $('#message-chatbot').append(dom_message_bot)
-                        $('#' + id_map).remove()
-                    } else {
-                        $('#message-chatbot').append(dom_message_bot)
-                        initMap(data.location.lat, data.location.lng, id_map)
-                    }
-                }, 500);
+        $('#message_bot_loading').remove()
+        if (data.status === false) {
+            dom_grandpy(data.message.data, id_map)
+            $('#' + id_map).remove()
+        } else {
+            // $('#message-chatbot').append(dom_message_bot)
+            dom_grandpy(data.message.data, id_map)
+            initMap(data.location.lat, data.location.lng, id_map)
+        }
+    }, 500);
+
+}
+
+function wiki(data, id_map) {
+    data = "Au passage connais tu l'histoire de ce lieux ?"
+    setTimeout(function () {
+        dom_grandpy(data)
+        $('#' + id_map).remove()
+    }, 4000);
 }
