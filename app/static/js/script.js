@@ -6,7 +6,7 @@ $(document).ready(function () {
         const str_message = $('#message').val();
         if (str_message) {
             const now = new Date();
-            let options = { dateStyle: 'short', timeStyle: 'short' };
+            let options = {dateStyle: 'short', timeStyle: 'short'};
             const date_now = now.toLocaleString('fr-FR', options)
 
 
@@ -49,78 +49,16 @@ $(document).ready(function () {
                             </div>"
                 $("#message").val("");
                 $('#message-chatbot').append(loading_message)
-
-
             },
             success: function (data) {
                 console.log(data)
                 console.log(data.data.address)
-                var id_map = "map_" + Date.now()
-                // var message = "Voici l'adresse de " + data.data.message.data + ": " + data.data.address
-                var dom_message_bot = "\
-                                <div class='d-flex justify-content-start mb-4'>\
-                                        <div class='img_cont_msg'>\
-                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
-                                        </div>\
-                                        <div class='msg_cotainer'>\
-                                                " + data.data.message.data + "\
-                                                <span class='msg_time'>" + data.data.message.date + "</span>\
-                                        </div>\
-                                </div>\
-                                <div id="+ id_map +" class='map'></div>"
-                var no_found_message = "\
-                                <div class='d-flex justify-content-start mb-4'>\
-                                        <div class='img_cont_msg'>\
-                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
-                                        </div>\
-                                        <div class='msg_cotainer'>\
-                                                " + data.data.message.data + "\
-                                                <span class='msg_time'>" + data.data.message.date + "</span>\
-                                        </div>\
-                                </div>"
 
-                var message_grandpy_wiki = "\
-                                <div class='d-flex justify-content-start mb-4'>\
-                                        <div class='img_cont_msg'>\
-                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
-                                        </div>\
-                                        <div class='msg_cotainer'>\
-                                                " + data.data.wiki_grandpy + "\
-                                                <span class='msg_time'>" + data.data.message.date + "</span>\
-                                        </div>\
-                                </div>"
-                var get_info_wiki = "\
-                                <div class='d-flex justify-content-start mb-4'>\
-                                        <div class='img_cont_msg'>\
-                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
-                                        </div>\
-                                        <div class='msg_cotainer'>\
-                                                " + data.data.wiki[0].snippet + "\
-                                                <span class='msg_time'>" + data.data.message.date + "</span>\
-                                        </div>\
-                                </div>"
-                setTimeout(function () {
-                    $('#message_bot_loading').remove()
-                    if (data.data.status === false) {
-                        $('#message-chatbot').append(no_found_message)
-                    }
-                    else {
-                        $('#message-chatbot').append(dom_message_bot)
-                        initMap(data.data.location.lat, data.data.location.lng, id_map)
-                    }
-                }, 500);
-                setTimeout(function () {
-                    $('#message-chatbot').append(message_grandpy_wiki)
-                    $('#message-chatbot').append(get_info_wiki)
-                }, 5000);
+                google(data.data)
 
             },
-
         });
-
-
     });
-
 });
 
 let map;
@@ -138,4 +76,30 @@ function initMap(lat, lng, id) {
         map,
         title: "Hello World!",
     });
+}
+
+function google(data) {
+    var id_map = "map_" + Date.now()
+    var dom_message_bot = "\
+                                <div class='d-flex justify-content-start mb-4'>\
+                                        <div class='img_cont_msg'>\
+                                                <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
+                                        </div>\
+                                        <div class='msg_cotainer'>\
+                                                " + data.message.data + "\
+                                                <span class='msg_time'>" + data.message.date + "</span>\
+                                        </div>\
+                                </div>\
+                                <div id=" + id_map + " class='map'></div>"
+
+    setTimeout(function () {
+                    $('#message_bot_loading').remove()
+                    if (data.status === false) {
+                        $('#message-chatbot').append(dom_message_bot)
+                        $('#' + id_map).remove()
+                    } else {
+                        $('#message-chatbot').append(dom_message_bot)
+                        initMap(data.location.lat, data.location.lng, id_map)
+                    }
+                }, 500);
 }

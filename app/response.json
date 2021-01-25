@@ -1,0 +1,13 @@
+{
+	"api_google": {
+		"good_response": [
+			"j'ai ce  que tu m'a demande, tiens l'adresse de",
+			"Voici l'adresse de"
+		],
+		"bad_response": [
+			"Désolé mon petit, mais je n'ai pas trouvé l'adresse de",
+			"Et tu sur que l'adresse que tu m'a donné est correct ? car je ne trouve rien: "
+		]
+	}
+}
+

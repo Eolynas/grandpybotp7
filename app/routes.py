@@ -54,33 +54,35 @@ def message():
 
     cnx_api = api_google.ApiGoogle()
     get_api = cnx_api.get_address(parse_question)
-    dict_get_api = {}
-    date_now = datetime.now()
-    date_now = date_now.strftime("%d/%m/%Y %H:%M")
-    if get_api["status"] == "ZERO_RESULTS":
-        message_no_found = f"Désolé mon petit, je ne trouve pas l'adresse de {parse_question}"
-        dict_message = {'data': message_no_found, 'date': date_now}
-        dict_get_api['message'] = dict_message
-        dict_get_api['status'] = False
 
-        return jsonify(data=dict_get_api)
-
-    else:
-        print(cnx_api)
-        message_return = f" Voici l'adresse de {parse_question}: {get_api['results'][0]['formatted_address']}"
-        dict_message = {'data': message_return, 'date': date_now}
-        dict_get_api['message'] = dict_message
-        dict_get_api['status'] = True
-        dict_get_api['address'] = get_api["results"][0]["formatted_address"]
-        dict_get_api['location'] = get_api["results"][0]["geometry"]["location"]
-
-        # REQUEST API MEDIAWIKI
-        init_wiki = wiki.Wiki()
-        get_info_wiki = init_wiki.get_wiki_address(parse_question)
-        dict_get_api['wiki'] = get_info_wiki
-        dict_get_api['wiki_grandpy'] = f"Voici une petite histoire sur {parse_question}"
-
-
-        # REDIRECTION VERS CHATBOT
-        return jsonify(data=dict_get_api)
+    return jsonify(data=get_api)
+    # dict_get_api = {}
+    # date_now = datetime.now()
+    # date_now = date_now.strftime("%d/%m/%Y %H:%M")
+    # if get_api["status"] == "ZERO_RESULTS":
+    #     message_no_found = f"Désolé mon petit, je ne trouve pas l'adresse de {parse_question}"
+    #     dict_message = {'data': message_no_found, 'date': date_now}
+    #     dict_get_api['message'] = dict_message
+    #     dict_get_api['status'] = False
+    #
+    #     return jsonify(data=dict_get_api)
+    #
+    # else:
+    #     print(cnx_api)
+    #     message_return = f" Voici l'adresse de {parse_question}: {get_api['results'][0]['formatted_address']}"
+    #     dict_message = {'data': message_return, 'date': date_now}
+    #     dict_get_api['message'] = dict_message
+    #     dict_get_api['status'] = True
+    #     dict_get_api['address'] = get_api["results"][0]["formatted_address"]
+    #     dict_get_api['location'] = get_api["results"][0]["geometry"]["location"]
+    #
+    #     # REQUEST API MEDIAWIKI
+    #     init_wiki = wiki.Wiki()
+    #     get_info_wiki = init_wiki.get_wiki_address(parse_question)
+    #     dict_get_api['wiki'] = get_info_wiki
+    #     dict_get_api['wiki_grandpy'] = f"Voici une petite histoire sur {parse_question}"
+    #
+    #
+    #     # REDIRECTION VERS CHATBOT
+    #     return jsonify(data=dict_get_api)
 
