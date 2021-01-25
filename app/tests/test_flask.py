@@ -123,48 +123,72 @@ class TestFlaskApp:
         print(get_api_address_2)
         assert get_api_address_2 == example_false_reponse_api
 
-    # def test_get_api_wiki(self):
-    #     """
-    #     # TODO A FAIRE
-    #     :return:
-    #     """
-    #
-    #     example_get = {
-    #         "batchcomplete": "",
-    #         "continue": {
-    #             "sroffset": 10,
-    #             "continue": "-||"
-    #         },
-    #         "query": {
-    #             "searchinfo": {
-    #                 "totalhits": 41
-    #             },
-    #             "search": [
-    #                 {
-    #                     "ns": 0,
-    #                     "title": "OpenClassrooms",
-    #                     "pageid": 4338589,
-    #                     "size": 30753,
-    #                     "wordcount": 3137,
-    #                     "snippet": "chez <span class=\"searchmatch\">OpenClassrooms</span> », <span class=\"searchmatch\">OpenClassrooms</span> : le blog,\u200e 17 avril 2018 (lire en ligne, consulté le 11 juillet 2018) « <span class=\"searchmatch\">OpenClassrooms</span> », sur <span class=\"searchmatch\">openclassrooms</span>.com",
-    #                     "timestamp": "2020-12-30T04:35:53Z"
-    #                 }
-    #             ]
-    #         }
-    #     }
-    #     example_get_no_found = {
-    #         "batchcomplete": "",
-    #         "query": {
-    #             "searchinfo": {
-    #                 "totalhits": 0
-    #             },
-    #             "search": []
-    #         }
-    #     }
-    #
-    #     init_wiki = wiki.Wiki()
-    #     get_test = init_wiki.get_wiki_address("Openclassrooms")
-    #     assert get_test == example_get
-    #
-    #     get_test_no_found = init_wiki.get_wiki_address("sqdqsdqsdqsdq")
-    #     assert get_test_no_found == example_get_no_found
+    def mock_api_wiki(self, search: str) -> dict:
+        """
+
+        :param search:
+        :return:
+        """
+        request_found = {
+            "ns": 0,
+            "title": "Paris",
+            "pageid": 681159,
+            "size": 411931,
+            "wordcount": 45357,
+            "snippet": "significations, voir <span class=\"searchmatch\">Paris</span> (homonymie). « Ville Lumière » redirige ici. Ne pas confondre avec Ville de lumière ni la villa Lumière. <span class=\"searchmatch\">Paris</span> ([pa.ʁi]Écouter)",
+            "timestamp": "2021-01-23T17:55:20Z"
+        }
+        request_no_found = {
+            "batchcomplete": "",
+            "query": {
+                "searchinfo": {
+                    "totalhits": 0
+                },
+                "search": []
+            }
+        }
+        txt_input = "Paris"
+
+        if search.lower() == txt_input.lower():
+            return request_found
+        elif search == "":
+            return request_no_found
+        else:
+            return request_no_found
+
+    def test_get_api_wiki(self):
+        """
+        # TODO A FAIRE
+        :return:
+        """
+
+        example_get = {
+                "ns": 0,
+                "title": "Paris",
+                "pageid": 681159,
+                "size": 411931,
+                "wordcount": 45357,
+                "snippet": "significations, voir <span class=\"searchmatch\">Paris</span> (homonymie). « Ville Lumière » redirige ici. Ne pas confondre avec Ville de lumière ni la villa Lumière. <span class=\"searchmatch\">Paris</span> ([pa.ʁi]Écouter)",
+                "timestamp": "2021-01-23T17:55:20Z"
+            }
+        example_get_no_found = {
+            "batchcomplete": "",
+            "query": {
+                "searchinfo": {
+                    "totalhits": 0
+                },
+                "search": []
+            }
+        }
+        question_parsed_1 = "Paris"
+        question_parsed_2 = "sqsdqqdqsdqsdq"
+        question_parsed_3 = ""
+
+        get_test = self.mock_api_wiki(question_parsed_1)
+        assert get_test == example_get
+
+        get_test_no_found = self.mock_api_wiki(question_parsed_2)
+        assert get_test_no_found == example_get_no_found
+
+        get_test_no_found = self.mock_api_wiki(question_parsed_3)
+        assert get_test_no_found == example_get_no_found
