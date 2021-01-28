@@ -55,6 +55,11 @@ def message():
     cnx_api = api_google.ApiGoogle()
     get_api = cnx_api.get_address(parse_question)
 
+    # WIKI API
+
+    get_api_wiki = wiki.Wiki().get_wiki_address(parse_question)
+    get_api['WIKI'] = get_api_wiki
+
     return jsonify(data=get_api)
     # dict_get_api = {}
     # date_now = datetime.now()

@@ -126,9 +126,13 @@ function google(data) {
 }
 
 function wiki(data, id_map) {
-    data = "Au passage connais tu l'histoire de ce lieux ?"
+    grandpy_question_wiki = "Au passage connais tu l'histoire de ce lieux ?"
+    grandpy_return_wiki = data.WIKI
+
     setTimeout(function () {
-        dom_grandpy(data)
+        dom_grandpy(grandpy_question_wiki)
+        $('#' + id_map).remove()
+        dom_grandpy(grandpy_return_wiki)
         $('#' + id_map).remove()
     }, 4000);
 }
