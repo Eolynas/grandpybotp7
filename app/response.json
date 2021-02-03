@@ -7,7 +7,21 @@
 		"bad_response": [
 			"Désolé mon petit, mais je n'ai pas trouvé l'adresse de",
 			"Et tu sur que l'adresse que tu m'a donné est correct ? car je ne trouve rien: "
+		],
+		"connection_error": [
+			"On dirait que tu n'a pas payé ta facture internet, car je n'arrive pas à me connecter à Google, si tu veux une réponse, regle moi ca vite",
+			"Oups, une erreur c'est produite pendant la connexion à google, je ne peux pas repondre à ta question"
 		]
+	},
+	"api_wiki": {
+		"bad_response": [
+			"hummm, on dirait que je ne trouve pas d'information interessante sur ce lieux",
+			"Désolé, je ma mémoire me faut défaut, je n'est pas d'histoire interessante sur ce lieux"
+		],
+		"connection_error": [
+			"Désolé, mon livre WIKI n'a pas l'air d'etre disponible, je n'arrive pas à le trouver"
+		]
+
 	}
 }
 

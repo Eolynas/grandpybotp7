@@ -53,7 +53,10 @@ $(document).ready(function () {
             success: function (data) {
                 console.log(data)
                 console.log(data.data.address)
-                google(data.data)
+                var request_google = google(data.data)
+                if (request_google === false){
+                    return false
+                }
                 wiki(data.data)
 
 
@@ -116,6 +119,7 @@ function google(data) {
         if (data.status === false) {
             dom_grandpy(data.message.data, id_map)
             $('#' + id_map).remove()
+            return false;
         } else {
             // $('#message-chatbot').append(dom_message_bot)
             dom_grandpy(data.message.data, id_map)

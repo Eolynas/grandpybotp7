@@ -1,6 +1,7 @@
 import os
 import configparser
 import json
+from pathlib import Path
 
 cnx_db = False
 config = configparser.ConfigParser()
@@ -12,9 +13,10 @@ try:
     print("____________________________________")
     print("LOAD FILE CONFIGURATION")
     print("____________________________________")
-    config.read("app/config/config.ini")
-    file_json_response_grandpy = 'app/response.json'
-    with open(file_json_response_grandpy) as json_file:
+    config_file_path = Path(os.path.dirname(os.path.abspath(__file__))).absolute().parent / 'config' / 'config.ini'
+    config.read(config_file_path)
+    json_response_file_path = config_file_path = Path(os.path.dirname(os.path.abspath(__file__))).absolute().parent / 'response.json'
+    with open(json_response_file_path) as json_file:
         data = json.load(json_file)
         dict_response_grandpy = data
 

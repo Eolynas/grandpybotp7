@@ -53,9 +53,12 @@ def message():
     parse_question = parse.parser(string=message_question)
 
     cnx_api = api_google.ApiGoogle()
+
     get_api = cnx_api.get_address(parse_question)
 
     # WIKI API
+    if not get_api["status"]:
+        return jsonify(data=get_api)
 
     get_api_wiki = wiki.Wiki().get_wiki_address(parse_question)
     get_api['WIKI'] = get_api_wiki
