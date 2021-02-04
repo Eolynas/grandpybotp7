@@ -38,7 +38,24 @@ class Wiki:
             }
             get_api_by_id = requests.get(self.url_api, params=parameters_by_id).json()['query']['pages'][str(page_id)][
                 'extract']
-            return get_api_by_id
+
+            test_coherence = 0
+            for word in name.split(" "):
+                 if word.lower() in get_api_by_id.lower():
+                     test_coherence += 1
+
+            """
+            len(name) =                                 10       10%
+            test_coherence soit sup ou egal à              4       
+            
+            """
+            # test_coherence*100 / len(name.split(" "))
+            if ((test_coherence*100) / len(name.split(" "))) >= 60:
+                return get_api_by_id
+            else:
+                bad_response = choice(self.response_for_api['api_wiki']['bad_response'])
+                return bad_response
+
         except requests.exceptions.ConnectionError as e:
             print("Probleme de connexion à l'API WIKI")
             print(e)
@@ -51,9 +68,6 @@ class Wiki:
             bad_response = choice(self.response_for_api['api_wiki']['bad_response'])
 
             return bad_response
-
-
-
 
 
 if __name__ == "__main__":
