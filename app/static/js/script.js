@@ -1,3 +1,4 @@
+
 $(document).ready(function () {
 
     $("#submit").click(function (e) {
@@ -53,11 +54,14 @@ $(document).ready(function () {
                 success: function (data) {
                     console.log(data)
                     console.log(data.data.address)
-                    var request_google = google(data.data)
-                    if (request_google === false){
-                        return false
+                    setTimeout(function () {
+                        var google_return = google(data.data)
+                        if (google_return === true){
+                        wiki(data.data)
                     }
-                    wiki(data.data)
+                    }, 500);
+
+
 
 
                 },
@@ -115,18 +119,18 @@ function initMap(lat, lng, id) {
 function google(data) {
     var id_map = "map_" + Date.now()
 
-    setTimeout(function () {
-        $('#message_bot_loading').remove()
-        if (data.status === false) {
-            dom_grandpy(data.message.data, id_map)
-            $('#' + id_map).remove()
-            return false;
-        } else {
-            // $('#message-chatbot').append(dom_message_bot)
-            dom_grandpy(data.message.data, id_map)
-            initMap(data.location.lat, data.location.lng, id_map)
+    status_api_goole = true
+    $('#message_bot_loading').remove()
+    if (data.status === false) {
+        dom_grandpy(data.message.data, id_map)
+        $('#' + id_map).remove()
+        status_api_goole = false
+    } else {
+        // $('#message-chatbot').append(dom_message_bot)
+        dom_grandpy(data.message.data, id_map)
+        initMap(data.location.lat, data.location.lng, id_map)
         }
-    }, 500);
+    return status_api_goole
 
 }
 
