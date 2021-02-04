@@ -4,7 +4,7 @@ $(document).ready(function () {
         var url = 'message';
         e.preventDefault();
         const str_message = $('#message').val();
-        if (str_message) {
+        if (str_message || !str_message === "") {
             const now = new Date();
             let options = {dateStyle: 'short', timeStyle: 'short'};
             const date_now = now.toLocaleString('fr-FR', options)
@@ -24,44 +24,45 @@ $(document).ready(function () {
                                 </div>\
                         </div>")
 
-        }
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: $('form').serialize(),
-            dataType: 'json',
-            beforeSend: function (data) {
-                var loading_message = "\
-                            <div class='d-flex justify-content-start mb-4' id='message_bot_loading'>\
-                                <div class='img_cont_msg' >\
-                                    <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
-                                </div>\
-                                    <div class='loading-msg'> \
-                                        <div class='msg_cotainer'>\
-                                            <div class='canvas canvas6'>\
-                                                <div class='spinner p1'></div>\
-                                                <div class='spinner p2'></div>\
-                                                <div class='spinner p3'></div>\
-                                                <div class='spinner p4'></div>\
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $('form').serialize(),
+                dataType: 'json',
+                beforeSend: function (data) {
+                    var loading_message = "\
+                                <div class='d-flex justify-content-start mb-4' id='message_bot_loading'>\
+                                    <div class='img_cont_msg' >\
+                                        <img id='message_bot' alt='avatar' src='/static/img/grandpybot.jpg' class='rounded-circle user_img_msg'>\
+                                    </div>\
+                                        <div class='loading-msg'> \
+                                            <div class='msg_cotainer'>\
+                                                <div class='canvas canvas6'>\
+                                                    <div class='spinner p1'></div>\
+                                                    <div class='spinner p2'></div>\
+                                                    <div class='spinner p3'></div>\
+                                                    <div class='spinner p4'></div>\
+                                                </div>\
                                             </div>\
                                         </div>\
-                                    </div>\
-                            </div>"
-                $("#message").val("");
-                $('#message-chatbot').append(loading_message)
-            },
-            success: function (data) {
-                console.log(data)
-                console.log(data.data.address)
-                var request_google = google(data.data)
-                if (request_google === false){
-                    return false
-                }
-                wiki(data.data)
+                                </div>"
+                    $("#message").val("");
+                    $('#message-chatbot').append(loading_message)
+                },
+                success: function (data) {
+                    console.log(data)
+                    console.log(data.data.address)
+                    var request_google = google(data.data)
+                    if (request_google === false){
+                        return false
+                    }
+                    wiki(data.data)
 
 
-            },
-        });
+                },
+            });
+        }
     });
 });
 
