@@ -28,7 +28,7 @@ body, html {
 	-moz-box-sizing: border-box;
 	-o-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
-	margin: 40px auto 0 auto;
+	margin: 40px auto 15px auto;
    	width: 750px;
    	text-align: left;
    	background-color: #473431;
@@ -118,8 +118,8 @@ pre[class*="language-"] {
   font-family: Consolas, Monaco, 'Andale Mono', monospace;
   direction: ltr;
   text-align: left;
-  white-space: pre;
   word-spacing: normal;
+  white-space: pre-line;
 
   -moz-tab-size: 4;
   -o-tab-size: 4;
