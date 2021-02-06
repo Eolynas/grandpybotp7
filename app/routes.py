@@ -1,9 +1,14 @@
+import os
 from datetime import datetime
 
-from flask import render_template, redirect, url_for, jsonify
+from flask import render_template, redirect, url_for, jsonify, send_from_directory
 
 from app import app, forms, parser, api_google, function, wiki
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static', 'images'),
+                               'favicon.ico', mimetype='image/png')
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
