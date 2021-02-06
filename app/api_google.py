@@ -1,3 +1,5 @@
+import os
+
 import requests
 import app.config.config as config
 from datetime import datetime
@@ -11,7 +13,7 @@ class ApiGoogle:
 
     def __init__(self):
         # TODO: A REVOIR
-        self.key_api = config.config['API']['key_api_google']
+        self.key_api = os.environ.get('key_api_google')
         self.response_for_api = config.dict_response_grandpy
 
     def get_address(self, address: str) -> dict:
