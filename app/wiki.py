@@ -1,6 +1,8 @@
 import requests
 import app.config.config as config
-from random import *
+from random import choice
+from app import logger
+
 
 
 class Wiki:
@@ -12,11 +14,11 @@ class Wiki:
         self.url_api = 'http://fr.wikipedia.org/w/api.php'
         self.response_for_api = config.dict_response_grandpy
 
-    def get_wiki_address(self, name) -> str:
+    def _get_wiki_id_page(self, name) -> int:
         """
-        # TODO A FAIRE
-        :param name:
-        :return:
+        return the id_page wiki page for search name
+        :param name: search name in api wiki
+        :return: name id_page
         """
         parameters = {
             "action": "query",
@@ -24,9 +26,19 @@ class Wiki:
             "srsearch": name,
             "format": "json",
         }
+        get_api = requests.get(self.url_api, params=parameters).json()
+        page_id = get_api['query']['search'][0]['pageid']
+
+        return page_id
+
+    def get_wiki_address(self, name) -> str:
+        """
+        return the id_page wiki page for search name
+        :param name: search name in api wiki
+        :return: research history (name)
+        """
         try:
-            get_api = requests.get(self.url_api, params=parameters).json()
-            page_id = get_api['query']['search'][0]['pageid']
+            page_id = self._get_wiki_id_page(name=name)
             parameters_by_id = {
                 "format": "json",
                 "action": "query",
@@ -44,12 +56,6 @@ class Wiki:
                  if word.lower() in get_api_by_id.lower():
                      test_coherence += 1
 
-            """
-            len(name) =                                 10       10%
-            test_coherence soit sup ou egal à              4       
-            
-            """
-            # test_coherence*100 / len(name.split(" "))
             if ((test_coherence*100) / len(name.split(" "))) >= 60:
                 return get_api_by_id
             else:
@@ -57,26 +63,14 @@ class Wiki:
                 return bad_response
 
         except requests.exceptions.ConnectionError as e:
-            print("Probleme de connexion à l'API WIKI")
-            print(e)
+            logger.info("Probleme de connexion à l'API WIKI")
+            logger.info(e)
             choise_response_connection_error = choice(self.response_for_api['api_wiki']['connection_error'])
 
             return choise_response_connection_error
         except IndexError as e:
-            print("Aucune information dans l'API WIKI")
-            print(e)
+            logger.error("Aucune information dans l'API WIKI")
+            logger.error(e)
             bad_response = choice(self.response_for_api['api_wiki']['bad_response'])
 
             return bad_response
-
-
-if __name__ == "__main__":
-    a = Wiki().get_wiki_address("sdqsdqsdqsdqsdqsdqsdq")
-    print(a)
-    print("-----")
-    b = Wiki().get_wiki_address("Le Mans")
-    print(b)
-    print("-----")
-    c = Wiki().get_wiki_address("Paris")
-    print(c)
-    print("-----")
