@@ -7,13 +7,6 @@ from flask import render_template, jsonify
 from app import app, forms, parser, api_google, wiki
 
 
-#  TODO: A SUPPRIMER SI BON TEST
-# @app.route('/favicon.ico')
-# def favicon():
-#     return send_from_directory(os.path.join(app.root_path, 'static', 'img'),
-#                                'favicon.ico', mimetype='image/png')
-
-
 @app.route("/", methods=["GET", "POST"])
 @app.route("/index", methods=["GET", "POST"])
 def index():

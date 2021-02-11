@@ -29,7 +29,7 @@ class TestFlaskApp:
 
     def test_parser(self):
         """
-        # TODO A FAIRE
+        test parser methode
         :return:
         """
         messages = ["Bonjour, connait tu l'adresse d'OpenClassRooms", 'OpenClassRooms']
@@ -81,7 +81,7 @@ class TestFlaskApp:
     @patch.object(api_google.ApiGoogle, 'get_address')
     def test_get_api_google(self, mock_get):
         """
-        # TODO A FAIRE
+        test request get api google
         :return:
         """
         request_no_found = {

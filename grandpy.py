@@ -6,14 +6,6 @@ from app import app, logger
 
 if __name__ == "__main__":
 
-    # TODO: VERIFIER QUE TOUTES LES VAR ENV SONT PRESENTES !!!!!!!!!
-    """
-    list var env
-    SECRET_KEY DEBUG_FLASK key_api_google
-    DEBUG_FLASK=;
-    SECRET_KEY =GrandPy;
-    key_api_google=AIzaSyCFwcjJ8KRvQ2WwKqVz43r9gwIPulUbKjE
-    """
     if os.environ.get("DEBUG_FLASK") not in ['true', 'True', ''] or os.environ.get("DEBUG_FLASK") is None:
         logger.error("La variable DEBUG_FLASK n'est pas correct")
         sys.exit()
