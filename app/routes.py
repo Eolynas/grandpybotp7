@@ -24,7 +24,7 @@ def index():
         print(name_project)
         if str(name_project) == "chatbot":
             return redirect(url_for('chatbot'), code=307)
-    return render_template('index.html', form=form)
+    return render_template('index.html', form=form, key_api_google=os.environ.get('key_api_google'))
 
 
 @app.route('/chatbot', methods=['GET', 'POST'])
@@ -40,7 +40,7 @@ def chatbot():
 
     ]
 
-    return render_template('chatbot.html', name_project=name_project, posts=posts, form=question)
+    return render_template('chatbot.html', name_project=name_project, posts=posts, form=question, key_api_google=os.environ.get('key_api_google'))
 
 
 @app.route('/message', methods=['POST'])
