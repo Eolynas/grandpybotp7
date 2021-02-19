@@ -1,8 +1,11 @@
 # from app_flask.hello import app as flask_app
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from app import app as flask_app
 from app import parser, api_google, wiki
+import os
+
+flask_app.config['SECRET_KEY'] = "grandpy"
 
 
 class TestFlaskApp:
@@ -47,44 +50,16 @@ class TestFlaskApp:
         parse_message = parse_question.parser(messages_empty)
         assert parse_message == ""
 
-        parse_message = parse_question.parser(messages_number)
-        assert messages_number == ""
+        # parse_message = parse_question.parser(messages_number)
+        # assert messages_number == ""
 
-    def mock_api_google(self, search: str) -> dict:
-        txt_input = "openclassrooms"
-        request_no_found = {
-            "results": [],
-            "status": "ZERO_RESULTS"
-        }
-        request_found = {
-            "results": [
-                {
-                    "formatted_address": "10 Quai de la Charente, 75019 Paris, France",
-                    "geometry": {
-                        "location": {
-                            "lat": 48.8975156,
-                            "lng": 2.3833993
-                        },
-                    },
-                },
-            ],
-            "status": "OK"
-        }
-
-        if search.lower() == txt_input.lower():
-            return request_found
-        elif search == "":
-            return request_no_found
-        else:
-            return request_no_found
-
-    @patch.object(api_google.ApiGoogle, 'get_address')
+    @patch("app.api_google.requests")
     def test_get_api_google(self, mock_get):
         """
         test request get api google
         :return:
         """
-        request_no_found = {
+        request_not_found = {
             "results": [],
             "status": "ZERO_RESULTS"
         }
@@ -101,24 +76,6 @@ class TestFlaskApp:
                 },
             ],
             "status": "OK"
-        }
-        example_true_reponse_api = {
-            "results": [
-                {
-                    "formatted_address": "10 Quai de la Charente, 75019 Paris, France",
-                    "geometry": {
-                        "location": {
-                            "lat": 48.8975156,
-                            "lng": 2.3833993
-                        },
-                    },
-                },
-            ],
-            "status": "OK"
-        }
-        example_false_reponse_api = {
-            "results": [],
-            "status": "ZERO_RESULTS"
         }
 
 
@@ -127,87 +84,93 @@ class TestFlaskApp:
         question_parsed_3 = ""
 
         # mock_get.return_value.json.return_value = request_found
-        mock_get.requests.get.json.return_value = request_found
+        mock_get.get = MagicMock()
+        mock_get.get.return_value.json.return_value = request_found
 
         init_apigoole = api_google.ApiGoogle()
         get_api_address = init_apigoole.get_address(question_parsed_1)
         # print(get_api_address)
-        # assert get_api_address == example_true_reponse_api
+        assert get_api_address['status'] == True
+        assert "Openclassrooms" in get_api_address['message']['data']
 
-        # get_api_address_2 = self.mock_api_google(question_parsed_2)
-        # print(get_api_address_2)
-        # assert get_api_address_2 == example_false_reponse_api
-        #
-        # get_api_address_3 = self.mock_api_google(question_parsed_3)
-        # print(get_api_address_2)
-        # assert get_api_address_2 == example_false_reponse_api
+        mock_get.get.return_value.json.return_value = request_not_found
+        get_api_address_not_found = init_apigoole.get_address(question_parsed_2)
+        assert get_api_address_not_found['status'] == False
 
-    # def mock_api_wiki(self, search: str) -> dict:
-    #     """
-    #
-    #     :param search:
-    #     :return:
-    #     """
-    #     request_found = {
-    #         "ns": 0,
-    #         "title": "Paris",
-    #         "pageid": 681159,
-    #         "size": 411931,
-    #         "wordcount": 45357,
-    #         "snippet": "significations, voir <span class=\"searchmatch\">Paris</span> (homonymie). « Ville Lumière » redirige ici. Ne pas confondre avec Ville de lumière ni la villa Lumière. <span class=\"searchmatch\">Paris</span> ([pa.ʁi]Écouter)",
-    #         "timestamp": "2021-01-23T17:55:20Z"
-    #     }
-    #     request_no_found = {
-    #         "batchcomplete": "",
-    #         "query": {
-    #             "searchinfo": {
-    #                 "totalhits": 0
-    #             },
-    #             "search": []
-    #         }
-    #     }
-    #     txt_input = "Paris"
-    #
-    #     if search.lower() == txt_input.lower():
-    #         return request_found
-    #     elif search == "":
-    #         return request_no_found
-    #     else:
-    #         return request_no_found
-    #
-    # def test_get_api_wiki(self):
-    #     """
-    #     # TODO A FAIRE
-    #     :return:
-    #     """
-    #
-    #     example_get = {
-    #             "ns": 0,
-    #             "title": "Paris",
-    #             "pageid": 681159,
-    #             "size": 411931,
-    #             "wordcount": 45357,
-    #             "snippet": "significations, voir <span class=\"searchmatch\">Paris</span> (homonymie). « Ville Lumière » redirige ici. Ne pas confondre avec Ville de lumière ni la villa Lumière. <span class=\"searchmatch\">Paris</span> ([pa.ʁi]Écouter)",
-    #             "timestamp": "2021-01-23T17:55:20Z"
-    #         }
-    #     example_get_no_found = {
-    #         "batchcomplete": "",
-    #         "query": {
-    #             "searchinfo": {
-    #                 "totalhits": 0
-    #             },
-    #             "search": []
-    #         }
-    #     }
-    #     question_parsed_1 = "Paris"
-    #     question_parsed_2 = "sqsdqqdqsdqsdq"
-    #     question_parsed_3 = ""
-    #
-    #     get_test = self.mock_api_wiki(question_parsed_1)
-    #     assert get_test == example_get
-    #
-    #     get_test_no_found = self.mock_api_wiki(question_parsed_2)
-    #     assert get_test_no_found == example_get_no_found
-    #
-    #     get_test_no_found = self.mock_api_wiki(question_parsed_3)
-    #     assert get_test_no_found == example_get_no_found
+        get_api_address_empty = init_apigoole.get_address(question_parsed_3)
+        assert get_api_address_empty['status'] == False
+
+    @patch("app.wiki")
+    def test_get_id_api_wiki(self, mock_get):
+        """
+        # TODO A FAIRE
+        :return:
+        """
+
+        example_get = {
+                "ns": 0,
+                "title": "Paris",
+                "pageid": 681159,
+                "size": 411931,
+                "wordcount": 45357,
+                "snippet": "significations, voir <span class=\"searchmatch\">Paris</span> (homonymie). « Ville Lumière » redirige ici. Ne pas confondre avec Ville de lumière ni la villa Lumière. <span class=\"searchmatch\">Paris</span> ([pa.ʁi]Écouter)",
+                "timestamp": "2021-01-23T17:55:20Z"
+            }
+        example_get_no_found = {
+            "batchcomplete": "",
+            "query": {
+                "searchinfo": {
+                    "totalhits": 0
+                },
+                "search": []
+            }
+        }
+        question_parsed_1 = "Paris"
+        question_parsed_2 = "sqsdqqdqsdqsdq"
+        question_parsed_3 = ""
+
+        mock_get.requests.get = MagicMock()
+        mock_get.requests.get.return_value.json.return_value = example_get
+
+        init_apiwiki = wiki.Wiki()
+        get_api_address = init_apiwiki._get_wiki_id_page(question_parsed_1)
+        # print(get_api_address)
+        assert get_api_address == 681159
+
+    @patch("app.wiki")
+    def test_get_api_wiki_by_id(self, mock_get):
+        """
+        # TODO A FAIRE
+        :return:
+        """
+
+        example_get = {
+            "ns": 0,
+            "title": "Paris",
+            "pageid": 681159,
+            "size": 411931,
+            "wordcount": 45357,
+            "snippet": "significations, voir <span class=\"searchmatch\">Paris</span> (homonymie). « Ville Lumière » redirige ici. Ne pas confondre avec Ville de lumière ni la villa Lumière. <span class=\"searchmatch\">Paris</span> ([pa.ʁi]Écouter)",
+            "timestamp": "2021-01-23T17:55:20Z"
+        }
+        example_get_no_found = {
+            "batchcomplete": "",
+            "query": {
+                "searchinfo": {
+                    "totalhits": 0
+                },
+                "search": []
+            }
+        }
+        question_parsed_1 = "Paris"
+        question_parsed_2 = "sqsdqqdqsdqsdq"
+        question_parsed_3 = ""
+
+        mock_get.requests.get = MagicMock()
+        mock_get.requests.get.return_value.json.return_value = example_get
+
+        with patch.object(wiki.Wiki, '_get_wiki_id_page', return_value=681159) as mock_method:
+            init_apiwiki = wiki.Wiki()
+            get_api_address = init_apiwiki.get_wiki_address(question_parsed_1)
+            # print(get_api_address)
+            assert "Paris ([pa.ʁi]) est la commune la plus peuplée et la capitale de la France" in get_api_address
